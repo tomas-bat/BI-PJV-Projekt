@@ -1,14 +1,13 @@
 package thedrake.ui;
 
 import java.util.List;
+import java.util.Stack;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import thedrake.BoardPos;
-import thedrake.GameState;
-import thedrake.Move;
-import thedrake.PositionFactory;
+import thedrake.*;
 
 public class BoardView extends GridPane implements TileViewContext {
 
@@ -17,6 +16,14 @@ public class BoardView extends GridPane implements TileViewContext {
     private ValidMoves validMoves;
 
     private TileView selected;
+
+    private StackView orangeArmy;
+
+    private StackView blueArmy;
+
+    private StackView stackView;
+
+    private PlayingSide currentPlaying = PlayingSide.BLUE;
 
     public BoardView(GameState gameState) {
         this.gameState = gameState;
@@ -38,8 +45,10 @@ public class BoardView extends GridPane implements TileViewContext {
 
     @Override
     public void tileViewSelected(TileView tileView) {
-        if (selected != null && selected != tileView)
+        if (selected != null && selected != tileView) {
             selected.unselect();
+            selected = null;
+        }
 
         selected = tileView;
 
@@ -54,16 +63,43 @@ public class BoardView extends GridPane implements TileViewContext {
 
     @Override
     public void executeMove(Move move) {
-        selected.unselect();
-        selected = null;
+        if (selected != null) {
+            selected.unselect();
+            selected = null;
+        }
+
         clearMoves();
+
+        if (gameState.armyOnTurn().boardTroops().at(move.target()).isPresent()) {
+            if (gameState.armyOnTurn().side() == PlayingSide.ORANGE) {
+                blueArmy.addTroopView(new TroopView(gameState.armyNotOnTurn().boardTroops().at(move.target()).get().troop(),
+                        PlayingSide.BLUE));
+            }
+            else {
+                orangeArmy.addTroopView(new TroopView(gameState.armyNotOnTurn().boardTroops().at(move.target()).get().troop(),
+                        PlayingSide.ORANGE));
+            }
+        }
+
         gameState = move.execute(gameState);
         validMoves = new ValidMoves(gameState);
         updateTiles();
+
+        if (stackView != null) {
+            stackView.removeTroopView();
+        }
+        stackView = null;
+
+        if (currentPlaying == PlayingSide.ORANGE)
+            currentPlaying = PlayingSide.BLUE;
+        else
+            currentPlaying = PlayingSide.ORANGE;
+
+        GameResult.changeStateTo(gameState.result());
     }
 
     private void updateTiles() {
-        for (Node node : getChildren()) {
+        for (Node node: getChildren()) {
             TileView tileView = (TileView) node;
             tileView.setTile(gameState.tileAt(tileView.position()));
             tileView.update();
@@ -78,12 +114,29 @@ public class BoardView extends GridPane implements TileViewContext {
     }
 
     private void showMoves(List<Move> moveList) {
-        for (Move move : moveList)
+        for (Move move: moveList)
             tileViewAt(move.target()).setMove(move);
     }
 
     private TileView tileViewAt(BoardPos target) {
-        int index = (3 - target.j()) * 4 + target.i();
+        int index = (gameState.board().dimension() - 1 - target.j()) * 4 + target.i();
         return (TileView) getChildren().get(index);
+    }
+
+    public void clickOnStackTile() {
+        showMoves(validMoves.movesFromStack());
+    }
+
+    public void onClickStackView(StackView stackView, PlayingSide playingSide) {
+        if (playingSide != currentPlaying)
+            return;
+        clearMoves();
+        this.stackView = stackView;
+        clickOnStackTile();
+    }
+
+    public void setStackArmy(StackView blue, StackView orange) {
+        this.blueArmy = blue;
+        this.orangeArmy = orange;
     }
 }

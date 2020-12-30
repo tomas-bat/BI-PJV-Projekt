@@ -33,14 +33,19 @@ public class StackView extends HBox {
         }
     }
 
-    public void removeTroopView(TroopView troopView) {
-        if (getChildren().contains(troopView)) {
-            getChildren().remove(troopView);
-            troopViews.remove(troopView);
+    public void removeTroopView() {
+        if (getChildren().contains(troopViews.get(0))) {
+            getChildren().remove(troopViews.get(0));
+            troopViews.remove((troopViews.get(0)));
         }
 
     }
 
     public List<TroopView> getTroopViews() { return troopViews; }
+
+    public void addTroopView(TroopView troopView) {
+        this.troopViews.add(troopView);
+        getChildren().add(troopView);
+    }
 
 }

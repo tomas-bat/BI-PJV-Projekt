@@ -3,7 +3,7 @@ package thedrake;
 import java.io.PrintWriter;
 
 public enum GameResult implements JSONSerializable {
-	VICTORY, DRAW, IN_PLAY;
+	VICTORY, DRAW, IN_PLAY, START;
 
     public void toJSON(PrintWriter writer) {
         writer.print("\"" + this.toString() + "\"");

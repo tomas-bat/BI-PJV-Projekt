@@ -46,29 +46,12 @@ public class GameView extends BorderPane {
 
         setCenter(stackBox);
 
-        setupClickListeners();
+        // When user clicks on troop:
+        blueStackView.getTroopViews().forEach(troop -> troop.setOnMouseClicked(e
+                -> boardView.onClickStackView(blueStackView, PlayingSide.BLUE)));
+        orangeStackView.getTroopViews().forEach(troop -> troop.setOnMouseClicked(e
+                -> boardView.onClickStackView(orangeStackView, PlayingSide.ORANGE)));
     }
 
-    private void setupClickListeners() {
-        blueStackView.getTroopViews().forEach( troop -> troop.setOnMouseClicked(e -> onClick(troop, PlayingSide.BLUE)));
-        orangeStackView.getTroopViews().forEach( troop -> troop.setOnMouseClicked(e -> onClick(troop, PlayingSide.ORANGE)));
-    }
-
-    private void onClick(TroopView troopView, PlayingSide side) {
-        if(side != gameState.sideOnTurn()) return;
-
-        if (side == PlayingSide.ORANGE) {
-            orangeStackView.removeTroopView(troopView);
-        } else {
-            blueStackView.removeTroopView(troopView);
-        }
-
-        gameState.placeFromStack(new BoardPos(0, 0, 0));
-
-        System.out.println(troopView.getTroop().name() + " - " + side.name());
-    }
-
-    public void update() {
-        
-    }
+    public BoardView boardView() { return boardView; }
 }

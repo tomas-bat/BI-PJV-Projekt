@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import thedrake.*;
 
@@ -30,10 +31,17 @@ public class TheDrakeApp extends Application {
         GameView gameView = new GameView(gameState);
         Scene gameScene = new Scene(gameView);
 
+        FXMLLoader victoryLoader = new FXMLLoader(getClass().getResource("victoryView.fxml"));
+        BorderPane victory = victoryLoader.load();
+        Scene victoryScene = new Scene(victory);
+
+        VictoryController victoryController = victoryLoader.getController();
+
+
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(GameResult.getStateChanged()) {
+                if (GameResult.getStateChanged()) {
                     GameResult.changeStateChangedTo(false);
 
                     switch(GameResult.getState()) {
@@ -42,11 +50,16 @@ public class TheDrakeApp extends Application {
                             primaryStage.show();
                             break;
                         case VICTORY:
-                            System.out.println("VICTORY");
-                            // TODO: Victory controller
+                            PlayingSide notOnTurn = gameView.boardView().gameState().armyNotOnTurn().side();
+                            victoryController.setLabel(notOnTurn.name() + " is the winner.");
+                            primaryStage.setScene(victoryScene);
+                            primaryStage.show();
                             break;
                         case DRAW:
                             // TODO: Draw
+                            break;
+                        case START:
+                            primaryStage.setScene(drakeScene);
                             break;
                     }
                 }
