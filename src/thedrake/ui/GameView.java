@@ -6,20 +6,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import thedrake.*;
 
-import java.util.Collections;
-
 public class GameView extends BorderPane {
 
-    private BoardView boardView;
-    private GameState gameState;
-    private StackView orangeStackView;
-    private StackView blueStackView;
-
-    private StackView orangeBArmy;
-    private StackView blueBArmy;
+    private final BoardView boardView;
+    private final StackView orangeStackView;
+    private final StackView blueStackView;
 
     public GameView(GameState gameState) {
-        this.gameState = gameState;
         this.boardView = new BoardView(gameState);
 
         VBox stackBox = new VBox();
@@ -28,7 +21,6 @@ public class GameView extends BorderPane {
 
         Label blueArmies = new Label("Zajaté jednotky modrého hráče");
         stackBox.getChildren().add(blueArmies);
-        stackBox.getChildren().add(blueBArmy = new StackView(Collections.emptyList(), PlayingSide.BLUE));
 
         Label stackOrange = new Label("Zásobník oranžového hráče");
         stackBox.getChildren().add(stackOrange);
@@ -42,7 +34,6 @@ public class GameView extends BorderPane {
 
         Label orangeArmies = new Label("Zajaté jednotky oranžového hráče");
         stackBox.getChildren().add(orangeArmies);
-        stackBox.getChildren().add(orangeBArmy = new StackView(Collections.emptyList(), PlayingSide.ORANGE));
 
         setCenter(stackBox);
 

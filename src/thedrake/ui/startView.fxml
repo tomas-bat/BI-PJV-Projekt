@@ -11,18 +11,10 @@
 </stylesheets>
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" text="Versus Mode" onAction="#onVersusMode"/>
-         </children>
-         <children>
-            <Button mnemonicParsing="false" text="Singleplayer"/>
-         </children>
-         <children>
-            <Button mnemonicParsing="false" text="Multiplayer" />
-         </children>
-         <children>
-            <Button mnemonicParsing="false" text="Exit" onAction="#onExit" />
-         </children>
+         <Button mnemonicParsing="false" text="Versus Mode" onAction="#onVersusMode"/>
+         <Button mnemonicParsing="false" text="Singleplayer"/>
+         <Button mnemonicParsing="false" text="Multiplayer"/>
+         <Button mnemonicParsing="false" text="Exit" onAction="#onExit"/>
       </VBox>
    </center>
 </BorderPane>

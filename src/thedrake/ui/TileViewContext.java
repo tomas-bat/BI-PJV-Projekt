@@ -10,5 +10,4 @@ public interface TileViewContext {
     GameState gameState();
 
     void executeMove(Move move);
-
 }

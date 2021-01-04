@@ -1,9 +1,7 @@
 package thedrake.ui;
 
 import javafx.geometry.Pos;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import thedrake.*;
 
 import java.util.ArrayList;
@@ -11,9 +9,9 @@ import java.util.List;
 
 public class StackView extends HBox {
 
-    private List<Troop> army;
+    private final List<Troop> army;
     private final PlayingSide side;
-    private List<TroopView> troopViews = new ArrayList<>();
+    private final List<TroopView> troopViews = new ArrayList<>();
 
     public StackView(List<Troop> army, PlayingSide side) {
         this.army = army;
@@ -42,10 +40,4 @@ public class StackView extends HBox {
     }
 
     public List<TroopView> getTroopViews() { return troopViews; }
-
-    public void addTroopView(TroopView troopView) {
-        this.troopViews.add(troopView);
-        getChildren().add(troopView);
-    }
-
 }

@@ -16,5 +16,5 @@ Button {
 
 Label {
     -fx-font-size: 100px;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }

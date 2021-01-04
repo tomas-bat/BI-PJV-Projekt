@@ -23,14 +23,14 @@ public class ValidMoves {
                 return Collections.emptyList();
             }
 
-            return ((TroopTile) tile).movesFrom(position, state);
+            return tile.movesFrom(position, state);
         }
 
         return Collections.emptyList();
     }
 
     public List<Move> movesFromStack() {
-        List<Move> moves = new ArrayList<Move>();
+        List<Move> moves = new ArrayList<>();
         PositionFactory pf = state.board().positionFactory();
         Army armyOnTurn = state.armyOnTurn();
         if (!armyOnTurn.boardTroops().isLeaderPlaced()) {
@@ -73,16 +73,6 @@ public class ValidMoves {
             }
         }
 
-        return moves;
-    }
-
-    public List<Move> allMoves() {
-        List<Move> moves = new ArrayList<>();
-        for (BoardPos pos : state.armyOnTurn().boardTroops().troopPositions()) {
-            moves.addAll(boardMoves(pos));
-        }
-
-        moves.addAll(movesFromStack());
         return moves;
     }
 }

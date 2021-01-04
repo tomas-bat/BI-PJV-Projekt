@@ -1,7 +1,6 @@
 package thedrake.ui;
 
 import java.util.List;
-import java.util.Stack;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,10 +15,6 @@ public class BoardView extends GridPane implements TileViewContext {
     private ValidMoves validMoves;
 
     private TileView selected;
-
-    private StackView orangeArmy;
-
-    private StackView blueArmy;
 
     private StackView stackView;
 
@@ -70,17 +65,6 @@ public class BoardView extends GridPane implements TileViewContext {
 
         clearMoves();
 
-        if (gameState.armyOnTurn().boardTroops().at(move.target()).isPresent()) {
-            if (gameState.armyOnTurn().side() == PlayingSide.ORANGE) {
-                blueArmy.addTroopView(new TroopView(gameState.armyNotOnTurn().boardTroops().at(move.target()).get().troop(),
-                        PlayingSide.BLUE));
-            }
-            else {
-                orangeArmy.addTroopView(new TroopView(gameState.armyNotOnTurn().boardTroops().at(move.target()).get().troop(),
-                        PlayingSide.ORANGE));
-            }
-        }
-
         gameState = move.execute(gameState);
         validMoves = new ValidMoves(gameState);
         updateTiles();
@@ -107,7 +91,7 @@ public class BoardView extends GridPane implements TileViewContext {
     }
 
     private void clearMoves() {
-        for (Node node : getChildren()) {
+        for (Node node: getChildren()) {
             TileView tileView = (TileView) node;
             tileView.clearMove();
         }
@@ -133,10 +117,5 @@ public class BoardView extends GridPane implements TileViewContext {
         clearMoves();
         this.stackView = stackView;
         clickOnStackTile();
-    }
-
-    public void setStackArmy(StackView blue, StackView orange) {
-        this.blueArmy = blue;
-        this.orangeArmy = orange;
     }
 }

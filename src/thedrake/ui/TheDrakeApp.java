@@ -27,9 +27,9 @@ public class TheDrakeApp extends Application {
         primaryStage.setScene(drakeScene);
         primaryStage.show();
 
-        GameState gameState = createSampleGameState();
-        GameView gameView = new GameView(gameState);
-        Scene gameScene = new Scene(gameView);
+        final GameState[] gameState = {createSampleGameState()};
+        final GameView[] gameView = {new GameView(gameState[0])};
+        final Scene[] gameScene = {new Scene(gameView[0])};
 
         FXMLLoader victoryLoader = new FXMLLoader(getClass().getResource("victoryView.fxml"));
         BorderPane victory = victoryLoader.load();
@@ -46,20 +46,21 @@ public class TheDrakeApp extends Application {
 
                     switch(GameResult.getState()) {
                         case IN_PLAY:
-                            primaryStage.setScene(gameScene);
+                            gameState[0] = createSampleGameState();
+                            gameView[0] = new GameView(gameState[0]);
+                            gameScene[0] = new Scene(gameView[0]);
+                            primaryStage.setScene(gameScene[0]);
                             primaryStage.show();
                             break;
                         case VICTORY:
-                            PlayingSide notOnTurn = gameView.boardView().gameState().armyNotOnTurn().side();
+                            PlayingSide notOnTurn = gameView[0].boardView().gameState().armyNotOnTurn().side();
                             victoryController.setLabel(notOnTurn.name() + " is the winner.");
                             primaryStage.setScene(victoryScene);
                             primaryStage.show();
                             break;
-                        case DRAW:
-                            // TODO: Draw
-                            break;
                         case START:
                             primaryStage.setScene(drakeScene);
+                            primaryStage.show();
                             break;
                     }
                 }

@@ -7,13 +7,13 @@ import thedrake.GameResult;
 public class VictoryController {
 
     @FXML
-    public Label label;
+    public Label winnerLabel;
 
-    public void onClick() {
+    public void backClicked() {
         GameResult.changeStateTo(GameResult.START);
     }
 
     public void setLabel(String text) {
-        label.setText(text);
+        winnerLabel.setText(text);
     }
 }
