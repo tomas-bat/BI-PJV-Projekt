@@ -20,6 +20,10 @@ public class BoardView extends GridPane implements TileViewContext {
 
     private PlayingSide currentPlaying = PlayingSide.BLUE;
 
+    private StackView orangeCaptured;
+
+    private StackView blueCaptured;
+
     public BoardView(GameState gameState) {
         this.gameState = gameState;
         this.validMoves = new ValidMoves(gameState);
@@ -65,6 +69,22 @@ public class BoardView extends GridPane implements TileViewContext {
 
         clearMoves();
 
+        if (gameState.armyNotOnTurn().boardTroops().at(move.target()).isPresent()) {
+            System.out.println("proslo to?");
+            if (gameState.armyOnTurn().side() == PlayingSide.ORANGE) {
+                System.out.println("Zajal jsem nekoho");
+                orangeCaptured.addTroopView(
+                        new TroopView(gameState.armyNotOnTurn().boardTroops().at(move.target()).get().troop(),
+                                PlayingSide.BLUE));
+            }
+            else {
+                System.out.println("Zajal jsem nekoho jinyho");
+                blueCaptured.addTroopView(
+                        new TroopView(gameState.armyNotOnTurn().boardTroops().at(move.target()).get().troop(),
+                                PlayingSide.ORANGE));
+            }
+        }
+
         gameState = move.execute(gameState);
         validMoves = new ValidMoves(gameState);
         updateTiles();
@@ -95,6 +115,11 @@ public class BoardView extends GridPane implements TileViewContext {
             TileView tileView = (TileView) node;
             tileView.clearMove();
         }
+    }
+
+    public void setCaptured(StackView orange, StackView blue) {
+        this.orangeCaptured = orange;
+        this.blueCaptured = blue;
     }
 
     private void showMoves(List<Move> moveList) {

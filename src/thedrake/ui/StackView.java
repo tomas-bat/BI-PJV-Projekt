@@ -21,6 +21,12 @@ public class StackView extends HBox {
         this.setAlignment(Pos.CENTER);
         setTroopViews();
     }
+
+    public void addTroopView(TroopView troopView) {
+        this.troopViews.add(troopView);
+        getChildren().add(troopView);
+        System.out.println("ahoj :D");
+    }
     
     private void setTroopViews() {
         getChildren().clear();

@@ -6,11 +6,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import thedrake.*;
 
+import java.util.Collections;
+
 public class GameView extends BorderPane {
 
     private final BoardView boardView;
     private final StackView orangeStackView;
     private final StackView blueStackView;
+    private final StackView blueCaptured;
+    private final StackView orangeCaptured;
 
     public GameView(GameState gameState) {
         this.boardView = new BoardView(gameState);
@@ -21,6 +25,7 @@ public class GameView extends BorderPane {
 
         Label blueArmies = new Label("Zajaté jednotky modrého hráče");
         stackBox.getChildren().add(blueArmies);
+        stackBox.getChildren().add(orangeCaptured = new StackView(Collections.emptyList(), PlayingSide.BLUE));
 
         Label stackOrange = new Label("Zásobník oranžového hráče");
         stackBox.getChildren().add(stackOrange);
@@ -34,6 +39,7 @@ public class GameView extends BorderPane {
 
         Label orangeArmies = new Label("Zajaté jednotky oranžového hráče");
         stackBox.getChildren().add(orangeArmies);
+        stackBox.getChildren().add(blueCaptured = new StackView(Collections.emptyList(), PlayingSide.ORANGE));
 
         setCenter(stackBox);
 
@@ -42,6 +48,8 @@ public class GameView extends BorderPane {
                 -> boardView.onClickStackView(blueStackView, PlayingSide.BLUE)));
         orangeStackView.getTroopViews().forEach(troop -> troop.setOnMouseClicked(e
                 -> boardView.onClickStackView(orangeStackView, PlayingSide.ORANGE)));
+
+        boardView.setCaptured(orangeCaptured, blueCaptured);
     }
 
     public BoardView boardView() { return boardView; }

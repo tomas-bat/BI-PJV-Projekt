@@ -13,6 +13,7 @@
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <Label text="Label" fx:id="winnerLabel"/>
          <Button mnemonicParsing="false" text="back to The Drake" onAction="#backClicked"/>
+         <Button mnemonicParsing="false" text="play again" onAction="#playAgainClicked"/>
       </VBox>
    </center>
 </BorderPane>

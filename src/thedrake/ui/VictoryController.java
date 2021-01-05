@@ -13,6 +13,10 @@ public class VictoryController {
         GameResult.changeStateTo(GameResult.START);
     }
 
+    public void playAgainClicked() {
+        GameResult.changeStateTo(GameResult.IN_PLAY);
+    }
+
     public void setLabel(String text) {
         winnerLabel.setText(text);
     }
